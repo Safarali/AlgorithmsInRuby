@@ -136,4 +136,3 @@ def is_power_of?(number, num)
         end
     end
 end
-p is_power_of?(2,1)
