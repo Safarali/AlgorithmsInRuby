@@ -125,7 +125,7 @@ end
 
 def is_power_of?(number, num)
     return true if number == 1 && num == 1
-    return false if number < 1 || num <= 1
+    return false if number < 1 ||  num <= 1
     while true
         if number == 1
             return true
@@ -135,4 +135,220 @@ def is_power_of?(number, num)
             return false
         end
     end
+end
+
+# 10. Third greatest value in array
+
+def third_greatest(numbers)
+    first = nil
+    second = nil
+    third = nil
+
+    idx = 0
+    while idx < numbers.length
+        val = numbers[idx]
+
+        if first == nil || first < val
+            third = second
+            second = first
+            first = val
+        elsif second == nil || second < val
+            third = second
+            second = val
+        elsif third == nil || third < val
+            third = val
+        end
+
+        idx += 1
+    end
+    third
+end
+
+
+# 11. Most common letter in string
+
+def most_common_letter(string)
+    count = Hash.new(0)
+
+    idx = 0
+    while idx < string.length
+        chr = string[idx]
+        if chr != " "
+            count[chr] += 1
+        end
+        idx += 1
+    end
+    common = string[0]
+    count.keys.each do |key|
+        if count[common] < count[key]
+            common = key
+        end
+    end
+    [common, count[common]]
+end
+
+
+# 12. Dasherize
+=begin  Write a method that takes in a number and returns a string, placing
+# a single dash before and after each odd digit. There is one
+# exception: don't start or end the string with a dash.
+=end
+
+def dasherize(num)
+    digits = num.to_s
+    dasherized = ""
+
+    idx = 0
+    while idx < digits.length
+        digit = digits[idx].to_i
+
+        if (idx > 0)
+            prev_digit = digits[idx-1].to_i
+            if (prev_digit % 2 == 1 || digit % 2 == 1)
+                dasherized += "-"
+            end
+        end
+        dasherized += digits[idx]
+
+        idx += 1
+    end
+    dasherized
+end
+
+
+# 13. Capitalize words
+
+def capitalize_words(string)
+    words = string.split(" ")
+    capitalized = []
+
+    idx = 0
+    while idx < words.length
+        word = words[idx]
+        capitalized << word.capitalize
+        idx += 1
+    end
+    capitalized.join(" ")
+end
+
+# 14. Scramble string
+
+def scramble_string(str, positions)
+    scrambled = ""
+
+    idx = 0
+    while idx < positions.length
+        pos = positions[idx]
+        scrambled += str[pos]
+
+        idx += 1
+    end
+    scrambled
+end
+
+
+# 15. is Prime
+
+def is_prime?(num)
+    return false if num < 2
+
+    i = 2
+    while i < num
+        return false if num % i == 0
+        i += 1
+    end
+    true
+end
+
+# 16. nth_prime
+
+def nth_prime(n)
+    count = 0
+
+    i = 2
+    while true
+        if(is_prime?(i))
+            count += 1
+            return i if count == n
+        end
+        i += 1
+    end
+end
+
+
+# 17. Longest palindrome
+
+def longest_palindrome(str)
+    longest = str[0]
+
+    idx = 0
+    while idx < str.length
+        idx1 = str.length-1
+        while idx1 > idx
+            word = str[idx..idx1]
+            if(palindrome?(word))
+                if longest.length < word.length
+                    longest = word
+                end
+            end
+            idx1 -= 1
+        end
+        idx += 1
+    end
+    longest
+end
+
+# 18. Most Common Factor
+
+def most_common_factor(num, num1)
+    i = nil
+    num > num1 ? i = num1 : i = num
+
+    while true
+        if(num % i == 0 && num1 % i == 0)
+            return i
+        end
+        i -= 1
+    end
+end
+
+
+# 19. Caesar Cipher, shift letter by given offset. DO it by ASCII. "a".ord = 97, 122.chr = "z"
+def caesar_cipher(offset, str)
+    shifted = ""
+
+    idx = 0
+    while idx < str.length
+        pos = str[idx].ord
+        abc_pos = pos % "a".ord
+        shifted_pos = (abc_pos + offset) % 26 + "a".ord
+
+        if(str[idx] != " ")
+            shifted += shifted_pos.chr
+        else
+            shifted += str[idx]
+        end
+        idx += 1
+    end
+    shifted
+end
+
+# 20. Count Letters that appear more than 1 .
+
+def num_repeats(string)
+    count = Hash.new(0)
+
+    idx = 0
+    while idx < string.length
+        chr = string[idx]
+        count[chr] += 1
+
+        idx += 1
+    end
+    repeats = 0
+
+    count.values.each do |value|
+        repeats += 1 if value > 1
+    end
+    repeats
 end
