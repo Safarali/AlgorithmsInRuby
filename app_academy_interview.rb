@@ -352,3 +352,153 @@ def num_repeats(string)
     end
     repeats
 end
+
+
+# 21. Nearest Larger
+
+=begin Write a function, `nearest_larger(arr, i)` which takes an array and an
+ index.  The function should return another index, `j`: this should
+satisfy:
+(a) `arr[i] < arr[j]`, AND (b) there is no `j2` closer to `i` than `j` where `arr[i] < arr[j2]`.
+
+In case of ties (see example below), choose the earliest (left-most)
+of the two indices. If no number in `arr` is larger than `arr[i]`,
+return `nil`
+=end
+
+def nearest_larger(arr, idx)
+    dif = 1
+
+    while true
+        left = idx - dif
+        right = idx + dif
+
+        if (left >= 0 && arr[left] > arr[idx])
+            return left
+        elsif (right < arr.length && arr[right] > arr[idx])
+            return right
+        elsif (left < 0 && right >= arr.length)
+            return nil
+        end
+
+        dif += 1
+    end
+end
+
+
+# 22. No repeats
+=begin Write a function, `no_repeats(year_start, year_end)`, which takes a
+range of years and outputs those years which do not have any
+repeated digits.
+=end
+
+def no_repeats(year_start, year_end)
+    no_repeated_years = []
+    while year_start <= year_end
+        if(no_repeat?(year_start))
+            no_repeated_years << year_start
+        end
+        year_start += 1
+    end
+    no_repeated_years
+end
+
+# Helper method
+def no_repeat?(year)
+    digits = year.to_s
+    chars_seen = []
+
+    idx = 0
+    while idx < digits.length
+        return false if chars_seen.include?(digits[idx])
+        chars_seen << digits[idx]
+        idx += 1
+    end
+    true
+end
+
+
+# 23. Letter Count
+
+def letter_count(string)
+    count = Hash.new(0)
+
+    idx = 0
+    while idx < string.length
+        chr = string[idx]
+        if(chr != " ")
+            count[chr] += 1
+        end
+
+        idx += 1
+    end
+    count
+end
+
+# 24. Ordered Vowel words
+
+def ordered_vowel_words(str)
+    words = str.split(" ")
+    ordered_vowels_str = []
+
+    idx = 0
+    while idx < words.length
+        if(order_vowel_word?(words[idx]))
+            ordered_vowels_str << words[idx]
+        end
+
+        idx += 1
+    end
+    ordered_vowels_str.join(" ")
+end
+
+
+def ordered_vowel_word?(word)
+    vowels = "aeiou"
+    word_vowels = []
+
+    idx = 0
+    while idx < word.length
+        if(vowels.include?(word[idx]))
+            word_vowels << word[idx]
+        end
+        idx += 1
+    end
+    word_vowels.sort == word_vowels
+end
+
+
+# 25. Anagrams
+
+def word_unscrambler(str, dictionary)
+    anagrams = []
+
+    idx = 0
+    while idx < dictionary.length
+         word = dictionary[idx]
+         if(str.split("").sort == word.split("").sort)
+             anagrams << word
+         end
+
+         idx += 1
+    end
+    anagrams
+end
+
+# 26. Bubble sort
+
+def bubble_sort(arr)
+    i = 0
+    while i < arr.length
+
+        j = i +1
+        while j < arr.length
+            if(arr[i] > arr[j])
+                arr[i], arr[j] = arr[j], arr[i]
+            end
+            j += 1
+        end
+        i += 1
+    end
+    arr
+end
