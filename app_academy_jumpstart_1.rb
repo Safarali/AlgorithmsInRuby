@@ -203,3 +203,143 @@ def most_common_vowel(string)
 
   common
 end
+
+
+# 18. Count word letters
+
+def letter_counts(word)
+  count = Hash.new(0)
+
+  word.each_char do |chr|
+    count[chr] += 1
+  end
+
+  count
+end
+
+
+# 19. Anagrams
+# Define a method that accepts an array of words and returns only the words that are
+# anagrams of a given string.
+
+def anagrams(string, array)
+  array.select do |word|
+    anagram?(word, string)
+  end
+end
+
+def anagram?(string1, string2)
+  string1.chars.sort == string2.chars.sort
+end
+# 20. ordered_vowel_word?
+# Define a boolean method that returns true if the vowels in a given word appear in order
+
+def ordered_vowel_word?(word)
+  vowels = "aeiou"
+  word_vowels = []
+  word.each_char do |chr|
+    word_vowels << chr if vowels.include?(chr)
+  end
+
+  word_vowels.sort == word_vowels
+end
+
+
+# 21. non_unique_letters
+# Define a method that accepts a string of lower case words (no punctuation) and returns
+# an array of letters that occur more than once.  We'll need to account for spaces too.
+
+def non_unique_letters(string)
+  count = Hash.new(0)
+
+  string.each_char do |chr|
+    count[chr] += 1 unless chr == " "
+  end
+
+  count.keys.select do |letter|
+    count[letter] > 1
+  end
+end
+
+# 22. highest_prime_number
+
+def highest_prime_factor(number)
+  number.downto(2) do |factor|
+    if number % factor == 0 && is_prime?(factor)
+      return factor
+    end
+  end
+  nil
+end
+
+def is_prime?(number)
+  return false if number < 2
+  (2...number).none? { |factor| number % factor == 0}
+end
+
+# 23. no_repeat_years
+# Define a method that accepts two years and returns all the years within that range that
+# have no repeated digits
+
+def no_repeat_years(first_year, last_year)
+  (first_year..last_year).select do |year|
+    no_repeat_year?(year)
+  end
+end
+
+def no_repeat_year?(year)
+  str_year = year.to_s
+  seen_chars = []
+
+  str_year.each_char do |chr|
+    return false if seen_chars.include?(chr)
+    seen_chars << chr
+  end
+  true
+end
+
+
+# 24. count_adjacent_numbers
+# Count the number of times that two adjacent numbers in an array add up to n.
+# You cannot reuse a number. So count_adjacent_sums([1, 5, 1], 6) => 1
+
+def count_adjacent_sums(array, n)
+  count = 0
+  idx = 0
+  while idx < array.length - 1
+    if array[idx] + array[idx+1] == n
+      count += 1
+      idx += 1
+    end
+    idx += 1
+  end
+  count
+end
+
+
+# 25 latinify
+# Translate into pig-latin!
+# The first consonants go to the end of the word, then add "ay"
+# For the words starting with vowel or including no vowels, simply add "ay" at the end
+
+def pig_latin(sentence)
+  sentence.split.map do |word|
+    latinify_word(word)
+  end.join(" ")
+end
+
+def latinify_word(word)
+  vowels = "aeiou"
+
+  if(vowels.include?(word[0]))
+    return "#{word}ay"
+  else
+    word.length.times do |idx|
+      if vowels.include?(word[idx])
+        return "#{word[idx..-1]}#{word[0...idx]}ay"
+      elsif idx == word.length-1
+        return "#{word}ay"
+      end
+    end
+  end
+end
