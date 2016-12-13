@@ -1,3 +1,4 @@
+
 # 1. alphabet_without
 #Define a method, #alphabet_without(array), that accepts an array of letters as an argument.
 #Your method should return an array of all the characters in the alphabet,
@@ -317,7 +318,7 @@ def count_adjacent_sums(array, n)
 end
 
 
-# 25 latinify
+# 25. latinify
 # Translate into pig-latin!
 # The first consonants go to the end of the word, then add "ay"
 # For the words starting with vowel or including no vowels, simply add "ay" at the end
@@ -342,4 +343,151 @@ def latinify_word(word)
       end
     end
   end
+end
+
+
+# 26. repeated_number_ranges
+# Given a list of numbers, give the start and end indices each time a number shows
+# up multiple times in a row.
+
+
+def repeated_number_ranges(numbers)
+  ranges = []
+  start_idx = 0
+
+  numbers.each_with_index do |ele, idx|
+    next_ele = numbers[idx + 1]
+    unless ele == next_ele
+      ranges << [start_idx, idx] unless start_idx == idx
+      start_idx = idx + 1
+    end
+  end
+
+  ranges
+end
+
+
+# 27. time_sums
+# Return an array of all the minutes of the day whose digits sum to N.
+# Use military time, so 1:00 PM is really 13:00.
+
+def time_sums(n)
+  times = []
+  (0..23).each do |hour|
+    (0..59).each do |minute|
+      time = "#{'%02d' % hour}:#{'%02d' % minute}"
+      times << time if time_sum(time) == n
+    end
+  end
+  times
+end
+
+
+def time_sum(time)
+  time.chars.reduce(0) do |sum, char|
+    sum + char.to_i
+  end
+end
+
+
+# 28. Fall and Winter Birthdays
+# Given a list of students and what month their birthday is, return all the pairs
+# of students whose birthdays both fall in the second half of the year.  Months
+# are numbers, and assume that July (month 7) and later is the second half of
+# the year.
+#
+# Only count pairs once, and work from the beginning of the list to the end.
+
+=begin students_with_birthdays = {
+  "Asher" => 6,
+  "Bertie" => 11,
+  "Dottie" => 8,
+  "Warren" => 9
+}
+
+second_half_birthday_pairs_1 = [
+  ["Bertie", "Dottie"],
+  ["Bertie", "Warren"],
+  ["Dottie", "Warren"]
+]
+
+=end
+
+def fall_and_winter_birthdays(student_birthdays)
+  students = student_birthdays.select  { |name, month| month >= 7 }
+  results = []
+
+  names = students.keys
+
+  0.upto(names.length-1) do |idx|
+    ((idx + 1)...names.length).each do |idx1|
+      results << [names[idx], names[idx1]]
+    end
+  end
+
+  results
+end
+
+
+# 29. Care Bear Summary
+# You have a calendar of hugs that care bears made (given as a list of
+# names by care bears).  Some of them have hugged multiple
+# times in a row.
+#
+# Return a hash where the keys are the care bears and the values are an array
+# of all of the start and end days of their hugging streaks.
+#
+# Days are the index of the calendar array.
+
+=begin hug_calendar = [
+  "Birthday Bear",
+  "Birthday Bear",
+  "Cheer Bear",
+  "Bedtime Bear",
+  "Bedtime Bear",
+  "Birthday Bear",
+  "Birthday Bear",
+  "Birthday Bear",
+  "Bedtime Bear",
+  "Friend Bear"
+]
+
+care_bear_count = {
+  "Birthday Bear" => [[0, 1], [5, 7]],
+  "Bedtime Bear" => [[3, 4]]
+}
+=end
+
+def care_bear_summary(hugs)
+  counter = Hash.new{|key, value| key[value] = []}
+  idx = 0
+
+  while idx < hugs.length
+    name = hugs[idx]
+    last_hug_idx = last_hug(hugs, idx)
+
+    unless last_hug_idx == idx
+      counter[name] << [idx, last_hug_idx]
+      idx = last_hug_idx
+    end
+    idx += 1
+  end
+
+  counter
+end
+
+# it gets the last  index with same value of idx before breaking streak.
+# (["bear", "bear", "fox", "bear"], 0) outputs 1, not 3. Because streak broke by "fox"
+def last_hug(hugs, idx)
+  last_idx = idx
+
+  (idx + 1).upto(hugs.length-1) do |idx1|
+    if hugs[last_idx] == hugs[idx1]
+      last_idx += 1
+      next
+    else
+      return last_idx
+    end
+  end
+  last_idx
 end
