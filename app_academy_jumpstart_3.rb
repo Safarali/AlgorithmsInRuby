@@ -181,3 +181,104 @@ def first_last_indices(string)
 
   result
 end
+
+
+# 11. price is right# Given a list of bids and an actual retail price, return the bid that is closest
+# to the actual retail price without going over that price.
+# Assume there is always at least one bid below the retail price.
+# puts price_is_right([200, 2350, 1400, 1600], 1599) == 1400
+# puts price_is_right([950, 850, 1000, 1], 1300) == 1000
+# puts price_is_right([1499, 1500, 1501], 1500) == 1500
+
+
+def price_is_right(bids, actual_price)
+  bids.sort.reverse.each do |bid|
+    return bid if bid <= actual_price
+  end
+end
+
+
+# 12. product except me
+# Given an array of numbers, calculate all the different products that remain when you take each element out of the array.
+# Ex.
+# [2, 3, 4] => [12, 8, 6], where:
+#   12 because you take out 2, leaving 3 * 4
+#   8, because you take out 3, leaving 2 * 4
+#   6, because you take out 4, leaving 2 * 3
+
+def products_except_me(numbers)
+  numbers.map do |num|
+    temp = num
+    productify(numbers)/temp
+  end
+end
+
+def productify(array)
+  array.reduce(1) { |result, ele| result * ele}
+end
+
+# 13. at_least_n_factors
+
+# Given an array of numbers, return all the numbers that have at least N
+# factors (including 1 and itself as factors).
+# For example, if you were given [1, 3, 10, 16] and wanted to find the numbers
+# that had at least five factors, you would return [16] because 16 has five
+# factors (1, 2, 4, 8, 16) and the others have fewer than five factors.
+
+
+def at_least_n_factors(numbers, n)
+  numbers.select do |num|
+    number_of_factors(num) >= n
+  end
+end
+
+def number_of_factors(number)
+  (1..number).count do |factor|
+    number % factor == 0
+  end
+end
+
+
+# 14.  Every Third Sum
+# Define a method, #every_third_sum(array), that accepts an array of integers as
+# an argument. Your method should return the sum of every third element
+
+def every_third_sum(array)
+  sum = 0
+
+  array.each_with_index do |ele, idx|
+    sum += ele if (idx + 1) % 3 == 0
+  end
+  sum
+end
+
+# 15. character_by_character
+# Define a method, #character_by_character(string) that accepts a string as an argument.
+# Your method should return an array of all the substrings that make up string,
+# starting with the first character.
+# ex: character_by_character("ruby") ==> ["r", "ru", "rub", "ruby"]
+
+def character_by_character(string)
+  sub_strings = []
+  string.chars.each_index do |idx|
+    sub_strings << string[0..idx]
+  end
+  sub_strings
+end
+
+
+# 15.
+# Define a method, #lcts(array), that accepts an array of integers as an argument.
+# Your method should return the largest sum that can be made by summing two consecutive numbers
+# ex: lcts([1, 5, 6, 2, 2, 7]) ==> 5 + 6 ==> 11
+
+def lcts(array)
+  max = array[0] + array[1]
+  (array.length-1).times do |idx|
+    sum = array[idx] + array[idx + 1]
+    if max < sum
+      max = sum
+    end
+  end
+  max
+end
