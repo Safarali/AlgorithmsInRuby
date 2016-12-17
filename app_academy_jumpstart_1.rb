@@ -1,493 +1,379 @@
+# 1.
+# Write a method that given an array, returns another array with each of the
+# numbers multiplied by two. Don't change the original array, make sure you
+# construct a copy!
 
-# 1. alphabet_without
-#Define a method, #alphabet_without(array), that accepts an array of letters as an argument.
-#Your method should return an array of all the characters in the alphabet,
-# but exclude the characters in the input array.
+def array_times_two(array)
+  doubled_arr = []
 
-def alphabet_without(letters)
-  alphabet = ("a".."z").to_a
+  array.each {|ele| doubled_arr << ele * 2}
+  doubled_arr
+end
 
-  letters.each do |letter|
-    alphabet.delete(letter)
+# Now change the original array
+
+def array_times_two!(array)
+  array.each_with_index do |ele, idx|
+      array[idx] = ele * 2
   end
-
-  alphabet
+  array
 end
 
-# 2. to_range
+# 2. Sum all the numbers up to number
 
-def to_range(array)
-  min = array.min
-  max = array.max
-  (min..max)
+def sum_up_to(number)
+  sum = 0
+
+  (1..number).each do |num|
+      sum += num
+  end
+  sum
 end
 
-# 3. words_lengths
-# Write a method, #word_lengths(string) that, given a sentence,
-# return a hash of each of the words and their lengths.
-# Assume words are uniq in sentence
 
-def word_lengths(sentence)
-  words = sentence.split
-  count = {}
+# 3. Return another array with unique elements
+
+def uniq(array)
+  uniq_arr = []
+
+  array.each do |ele|
+    uniq_arr << ele unless uniq_arr.include?(ele)
+  end
+  uniq_arr
+end
+
+
+# 4. Slippery numbers
+#A Slippery Number is a number is that has 3 as a factor or has 5 as a factor,
+# but does *not* have both as factors. For example, 6 is a Slippery Number,
+# but 30 is not. Write a method that given an integer n, returns an array of the
+# first n Slippery numbers.
+
+def slippery_numbers(n)
+  slipperies = [];
+  i = 3
+
+  while slipperies.length < n
+    if(i % 3 == 0 || i % 5 == 0)
+      slipperies << i if i % 15  != 0
+    end
+    i += 1
+  end
+  slipperies
+end
+
+# 5. Magic numbers
+# A magic number is a number whose digits, when added together, sum to 7. For
+# example, the number 34 would be a magic number, because 3 + 4 = 7. Write a
+# method that finds the first n many magic numbers.
+
+def magic_numbers(n)
+  magics = []
+  i = 7
+
+  while magics.length < n
+      magics << i if(is_magic?(i))
+      i += 1
+  end
+  magics
+end
+
+
+def is_magic?(number)
+  number_str = number.to_s
+  sum = 0
+
+  number_str.each_char do |chr|
+    sum += chr.to_i
+  end
+  sum == 7
+end
+
+
+
+# 6.
+# Write a method that returns a phrase with each word (separated by spaces)
+# capitalized.
+
+def capitalize_each_word(phrase)
+  words = phrase.split(" ")
+
+  words.each_with_index do |word,idx|
+    words[idx] = word.capitalize
+  end
+  words.join(" ")
+end
+
+
+
+# 7. palindrome?
+
+def palindrome?(string)
+  string.reverse == string
+end
+
+# 8. reverse digits
+
+def reverse_digits(number)
+  reversed = ""
+  digits = number.to_s
+
+  digits.each_char do |chr|
+    reversed = chr + reversed
+  end
+  reversed.to_i
+end
+
+# 9. Longest word
+
+def longest_word(phrase)
+  words = phrase.split(" ")
+  longest =  words.first
 
   words.each do |word|
-    count[word] = word.length
+    longest = word if longest.length < word.length
   end
+  longest
+end
 
-  count
+# 10. Time Conversion
+
+def time_conversion(minutes)
+  hours = minutes / 60
+  minutes = minutes % 60
+
+  "#{'%02d' % hours}:#{'%02d' % minutes}"
 end
 
 
-# 4. greatest_key_by_val
+# 11. Largest Pair
+ # Write a method that takes an array of pairs and returns the pair with the
+# greatest sum
 
-def greatest_key_by_val(hash)
-  greatest = nil
+def largest_pair(pairs)
+  largest = pairs.first
 
-  hash.each do |key, val|
-    if(greatest.nil? || hash[greatest] < val)
-      greatest = key
+  pairs.each do |pair|
+    if largest.first + largest.last < pair.first + pair.last
+      largest = pair
     end
   end
-
-  greatest
+  largest
 end
 
-# 5. odd_value_and_position
+# 12. two_sum_to_zero?
 
-def odd_value_and_position(array)
-  array.select.with_index do |ele, idx|
-    ele.odd? && idx.odd?
+def two_sum_to_zero?(array)
+  (0...array.length).each do |i|
+    (i+1).upto(array.length-1) do |j|
+      return true if array[i] + array[j] == 0
+    end
   end
+  false
 end
 
-# 6. get_evens
-
-def get_evens(array)
-  array.select {|ele| ele.even?}
-end
-
-# 7. reject_odds
-
-def reject_odds(array)
-  array.reject {|ele| ele.odd?}
-end
-
-# 8. array_sum
-# Define a method that accepts an array of numbers as an argument and uses #reduce to
-# sum the numbers in an array.
-
-def array_sum(numbers)
-  numbers.reduce(0) {|sum, ele| sum + ele}
-end
-
-# 9. array_sum_with_index
-
-def array_sum_with_index(array)
-  array.each_with_index.reduce(0) do |sum, (ele, idx)|
-    sum + ele * idx
-  end
-end
-
-# 10. remove nth letter
-
-def remove_nth_letter(string, n)
-  "#{string[0...n]}#{string[n + 1..-1]}"
-end
-
-# 10. Third greatest
+# 13. Third greatest
 
 def third_greatest(array)
-  array.sort[-3]
-end
+  first = nil
+  second = nil
+  third = nil
 
-
-# 11. missing_letters
-
-def missing_letters(string)
-  ("a".."z").reject {|letter| string.include?(letter)}
-end
-
-# 12. update_inventory
-# Define a method, #update_inventory(older, newer), that accepts two hashes as arguments. Update
-# the older inventory with the newer inventory. Add any new items to the hash and replace
-# the values for items that already exist.
-
-def update_inventory(older, newer)
-  newer.each do |key, value|
-    older[key] = value
+  array.each do |ele|
+    if first.nil? || first < ele
+      third = second
+      second = first
+      first = ele
+    elsif second.nil? || second < ele
+      third = second
+      second = ele
+    elsif third.nil? || third < ele
+      third = ele
+    end
   end
 
-  older
+  third
 end
 
+# 14.
+# Write a method that takes a string of words separated by spaces and returns a new
+# string, identical to the original, but with five-letter words replaced by "#####".
 
+def redact_five_letter_words(string)
+  words = string.split(" ")
 
-# 13. evens_and_odds
+  words.each_with_index do |word, idx|
+    words[idx] = "#####" if word.length == 5
+  end
+  words.join(" ")
+end
 
-def evens_and_odds(numbers)
-  count = {'even' => 0, 'odd' => 0}
-  numbers.each do |ele|
-    ele.even? ? count['even'] += 1 : count['odd'] += 1
+# 15. Reverse array in place
+
+def reverse(array)
+  size = array.length / 2
+
+  size.times do |i|
+    array[i], array[-1 - i] = array[-1 - i], array[i]
+  end
+  array
+end
+
+# 16. All Uniqs
+# Write a method, `#all_uniqs(array1, array2)` that, given two arrays, produces
+# a new array of only elements unique to `array1` and elements unique to `array2`.
+# Don't worry about the order of the elements in the output array.
+
+def all_uniqs(arr1, arr2)
+  uniqs = []
+
+  arr1.each do |ele|
+    unless uniqs.include?(ele)
+      uniqs << ele unless arr2.include?(ele)
+    end
   end
 
+  arr2.each do |ele|
+    unless uniqs.include?(ele)
+      uniqs << ele unless arr1.include?(ele)
+    end
+  end
+  uniqs
+end
+
+# 17.  e-words
+# Define a method, #e_words(sentence), that accepts a sentence as an argument. Your
+# method should count the number of words in the sentence that end with the letter "e".
+
+def e_words(sentence)
+  words = sentence.split(" ")
+  count = 0
+
+  words.each do |word|
+    count += 1 if word[-1] == "e"
+  end
   count
 end
 
+# 18. time_of_day
+# Define a method, #time_of_day(time) that accepts a sting as an argument. Examples of
+# valid arguments include: "12:30 PM", "1:00 AM", "8:15 PM". Your method should return
+# the period of day that encompasses the provided time: "morning", "afternoon", or "evening".
 
-# 14. chunk_array
-# Define a method, #chunk(array, n), that chunks an array into nested sub-arrays of length n
+# Use the following chart to categorize the times of day:
+  #  12:00 AM - 11:59 AM  ==>  "morning"
+  #  12:00 PM - 5:59 PM   ==>  "afternoon"
+  #  6:00 PM - 11:59 PM   ==>  "evening"
 
-def chunk(array, n)
-  chunks = []
-  a_chunk = []
+  def time_of_day(time)
+    if time.include?("AM")
+      return "morning"
+    elsif (time.include?("PM") && time[0].to_i <= 5) || time[0..1] == "12"
+      return "afternoon"
+    else
+      return "evening"
+    end
+  end
 
+
+# 19. fancy_sum?
+# Define a boolean method, #fancy_sum?(array), that accepts an array as an argument. Your
+# method should return true or false based on whether or not the array contains elements
+# that follow the fancy sum pattern.
+
+# The next element in the fancy sum series is determined by summing the previous element
+# and the previous element's index
+
+# Ex:  sum  -, 1+0, 1+1, 2+2, 4+3, 7+4, 11+5 ...
+#       el  1,   1,   2,   4,   7,  11,   16 ...
+#      idx  0,   1,   2,   3,   4,   5,    6 ...
+
+# arrays can have any starting element
+
+
+def fancy_sum?(array)
   array.each_with_index do |ele, idx|
-    a_chunk << ele
-    if a_chunk.length == n || idx == array.length-1
-      chunks << a_chunk
-      a_chunk = []
-    end
+    next if idx == 0
+
+    prev_idx = idx - 1
+    prev_sum =  prev_idx + array[prev_idx]
+
+    return false unless ele == prev_sum
   end
 
-  chunks
-end
-
-# 15. delete_first_letter
-# Define a method that accepts a phrase and a letter as arguments. Your method should
-# remove the first instance of that letter
-
-def delete_first_letter(phrase, letter)
-  return phrase unless phrase.include?(letter)
-
-  letter_pos = phrase.index(letter)
-  length = phrase.length
-
-  "#{phrase[0...letter_pos]}#{phrase[(letter_pos + 1)...length]}"
-end
-
-
-# 16. largest_sum_pair
-# Define a method that accepts an array of integers and returns the two unique indices
-# whose elements sum to the largest number.
-
-def largest_sum_pair(array)
-idx1, idx2 = 0, 1
-
-  array.length.times do |i|
-    (i + 1).upto(array.length-1) do |j|
-      if(array[idx1] + array[idx2]) < array[i] + array[j]
-        idx1, idx2 = i, j
-      end
-    end
-  end
-
-  return [idx1, idx2]
-end
-
-
-# 17. most_common_vowel
-
-def most_common_vowel(string)
-  joined_str = string.split.join
-  vowels = "aeiou"
-  count = Hash.new(0)
-
-  joined_str.each_char do |chr|
-    count[chr] += 1 if vowels.include?(chr)
-  end
-
-  common = nil;
-  count.each do |key, val|
-    common = key if common.nil? || count[common] < val
-  end
-
-  common
-end
-
-
-# 18. Count word letters
-
-def letter_counts(word)
-  count = Hash.new(0)
-
-  word.each_char do |chr|
-    count[chr] += 1
-  end
-
-  count
-end
-
-
-# 19. Anagrams
-# Define a method that accepts an array of words and returns only the words that are
-# anagrams of a given string.
-
-def anagrams(string, array)
-  array.select do |word|
-    anagram?(word, string)
-  end
-end
-
-def anagram?(string1, string2)
-  string1.chars.sort == string2.chars.sort
-end
-# 20. ordered_vowel_word?
-# Define a boolean method that returns true if the vowels in a given word appear in order
-
-def ordered_vowel_word?(word)
-  vowels = "aeiou"
-  word_vowels = []
-  word.each_char do |chr|
-    word_vowels << chr if vowels.include?(chr)
-  end
-
-  word_vowels.sort == word_vowels
-end
-
-
-# 21. non_unique_letters
-# Define a method that accepts a string of lower case words (no punctuation) and returns
-# an array of letters that occur more than once.  We'll need to account for spaces too.
-
-def non_unique_letters(string)
-  count = Hash.new(0)
-
-  string.each_char do |chr|
-    count[chr] += 1 unless chr == " "
-  end
-
-  count.keys.select do |letter|
-    count[letter] > 1
-  end
-end
-
-# 22. highest_prime_number
-
-def highest_prime_factor(number)
-  number.downto(2) do |factor|
-    if number % factor == 0 && is_prime?(factor)
-      return factor
-    end
-  end
-  nil
-end
-
-def is_prime?(number)
-  return false if number < 2
-  (2...number).none? { |factor| number % factor == 0}
-end
-
-# 23. no_repeat_years
-# Define a method that accepts two years and returns all the years within that range that
-# have no repeated digits
-
-def no_repeat_years(first_year, last_year)
-  (first_year..last_year).select do |year|
-    no_repeat_year?(year)
-  end
-end
-
-def no_repeat_year?(year)
-  str_year = year.to_s
-  seen_chars = []
-
-  str_year.each_char do |chr|
-    return false if seen_chars.include?(chr)
-    seen_chars << chr
-  end
   true
 end
 
 
-# 24. count_adjacent_numbers
-# Count the number of times that two adjacent numbers in an array add up to n.
-# You cannot reuse a number. So count_adjacent_sums([1, 5, 1], 6) => 1
+# 20. in_order?
+# Define a boolean method, #in_order?(array), that accepts an array of integers
+# as an argument. This method should return true if elements in the array are
+# in order from smallest to largest (left to right), and false otherwise.
 
-def count_adjacent_sums(array, n)
+def in_order?(array)
+  array.each_with_index do |ele, idx|
+    next if idx == 0
+    return false unless ele >= array[idx-1]
+  end
+  true
+end
+
+# 21. boolean_to_binary
+# Define a method, #boolean_to_binary(array), that accepts an array of booleans as
+# an argument. Your method should convert the array into a string made entirely
+ # of 1s and 0s. A true should become a "1" and a false should become a "0".
+
+def boolean_to_binary(booleans)
+  binaries = ""
+  booleans.each do |boolean|
+      boolean == true ? binaries += "1" : binaries += "0"
+  end
+  binaries
+end
+
+# 22. More vowels
+# Define a method, #more_vowels(string1, string2), that accepts two strings as
+# arguments. Your method should return the string with more vowels. Return "tie"
+# if the words have the same number of vowels.
+
+def more_vowels(string1, string2)
+  count_1 = count_vowels(string1)
+  count_2 = count_vowels(string2)
+
+  if count_1 > count_2
+    return string1
+  elsif count_1 == count_2
+    return "tie"
+  else
+    return string2
+  end
+end
+
+def count_vowels(string)
+  vowels = "aeiou"
   count = 0
-  idx = 0
-  while idx < array.length - 1
-    if array[idx] + array[idx+1] == n
-      count += 1
-      idx += 1
-    end
-    idx += 1
+
+  string.each_char do |chr|
+    count += 1 if vowels.include?(chr)
   end
   count
 end
 
 
-# 25. latinify
-# Translate into pig-latin!
-# The first consonants go to the end of the word, then add "ay"
-# For the words starting with vowel or including no vowels, simply add "ay" at the end
+# 23.  Fibonacci Sequence
+# The Fibonacci Sequence follows a simple rule: the next number in the sequence is the sum
+# of the previous two. The sequence starts with [0, 1]. We then compute the 3rd
+# number by summing the first & the second: 0 + 1 == 1. This yields [0, 1, 1]. We compute
+# the 4th number by summing the second and the third: 1 + 1 == 2... and the pattern
+# continues
 
-def pig_latin(sentence)
-  sentence.split.map do |word|
-    latinify_word(word)
-  end.join(" ")
-end
+def fibs(n)
+  seq = [0, 1]
+  next_ele = 1
 
-def latinify_word(word)
-  vowels = "aeiou"
-
-  if(vowels.include?(word[0]))
-    return "#{word}ay"
-  else
-    word.length.times do |idx|
-      if vowels.include?(word[idx])
-        return "#{word[idx..-1]}#{word[0...idx]}ay"
-      elsif idx == word.length-1
-        return "#{word}ay"
-      end
-    end
+  while seq.length < n
+      seq.push(next_ele)
+      next_ele = seq[-1] + seq[-2]
   end
-end
-
-
-# 26. repeated_number_ranges
-# Given a list of numbers, give the start and end indices each time a number shows
-# up multiple times in a row.
-
-
-def repeated_number_ranges(numbers)
-  ranges = []
-  start_idx = 0
-
-  numbers.each_with_index do |ele, idx|
-    next_ele = numbers[idx + 1]
-    unless ele == next_ele
-      ranges << [start_idx, idx] unless start_idx == idx
-      start_idx = idx + 1
-    end
-  end
-
-  ranges
-end
-
-
-# 27. time_sums
-# Return an array of all the minutes of the day whose digits sum to N.
-# Use military time, so 1:00 PM is really 13:00.
-
-def time_sums(n)
-  times = []
-  (0..23).each do |hour|
-    (0..59).each do |minute|
-      time = "#{'%02d' % hour}:#{'%02d' % minute}"
-      times << time if time_sum(time) == n
-    end
-  end
-  times
-end
-
-
-def time_sum(time)
-  time.chars.reduce(0) do |sum, char|
-    sum + char.to_i
-  end
-end
-
-
-# 28. Fall and Winter Birthdays
-# Given a list of students and what month their birthday is, return all the pairs
-# of students whose birthdays both fall in the second half of the year.  Months
-# are numbers, and assume that July (month 7) and later is the second half of
-# the year.
-#
-# Only count pairs once, and work from the beginning of the list to the end.
-
-=begin students_with_birthdays = {
-  "Asher" => 6,
-  "Bertie" => 11,
-  "Dottie" => 8,
-  "Warren" => 9
-}
-
-second_half_birthday_pairs_1 = [
-  ["Bertie", "Dottie"],
-  ["Bertie", "Warren"],
-  ["Dottie", "Warren"]
-]
-
-=end
-
-def fall_and_winter_birthdays(student_birthdays)
-  students = student_birthdays.select  { |name, month| month >= 7 }
-  results = []
-
-  names = students.keys
-
-  0.upto(names.length-1) do |idx|
-    ((idx + 1)...names.length).each do |idx1|
-      results << [names[idx], names[idx1]]
-    end
-  end
-
-  results
-end
-
-
-# 29. Care Bear Summary
-# You have a calendar of hugs that care bears made (given as a list of
-# names by care bears).  Some of them have hugged multiple
-# times in a row.
-#
-# Return a hash where the keys are the care bears and the values are an array
-# of all of the start and end days of their hugging streaks.
-#
-# Days are the index of the calendar array.
-
-=begin hug_calendar = [
-  "Birthday Bear",
-  "Birthday Bear",
-  "Cheer Bear",
-  "Bedtime Bear",
-  "Bedtime Bear",
-  "Birthday Bear",
-  "Birthday Bear",
-  "Birthday Bear",
-  "Bedtime Bear",
-  "Friend Bear"
-]
-
-care_bear_count = {
-  "Birthday Bear" => [[0, 1], [5, 7]],
-  "Bedtime Bear" => [[3, 4]]
-}
-=end
-
-def care_bear_summary(hugs)
-  counter = Hash.new{|key, value| key[value] = []}
-  idx = 0
-
-  while idx < hugs.length
-    name = hugs[idx]
-    last_hug_idx = last_hug(hugs, idx)
-
-    unless last_hug_idx == idx
-      counter[name] << [idx, last_hug_idx]
-      idx = last_hug_idx
-    end
-    idx += 1
-  end
-
-  counter
-end
-
-# it gets the last  index with same value of idx before breaking streak.
-# (["bear", "bear", "fox", "bear"], 0) outputs 1, not 3. Because streak broke by "fox"
-def last_hug(hugs, idx)
-  last_idx = idx
-
-  (idx + 1).upto(hugs.length-1) do |idx1|
-    if hugs[last_idx] == hugs[idx1]
-      last_idx += 1
-      next
-    else
-      return last_idx
-    end
-  end
-  last_idx
+  seq
 end
