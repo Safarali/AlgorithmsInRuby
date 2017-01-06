@@ -129,3 +129,48 @@ end
 def product(numbers)
   numbers.reduce(1) { |product, num| product * num }
 end
+
+
+
+# 6. # Save the Prisoner!
+# A jail has n prisoners, and each prisoner has a unique ID number, ranging
+# from 1 to n. There are m sweets that must be distributed to the prisoners.
+# The jailer decides the fairest way to do this is by sitting the prisoners
+# down in a circle (ordered by ascending ID number), and then, starting with
+# some random prisoner, distribute one candy at a time to each sequentially
+# numbered prisoner until all candies are distributed. For example, if the
+# jailer picks prisoner ID=2, then his distribution order would be
+# (2,3,4,5,...,n-1,n,1,2,3,4,...) until all m sweets are distributed.
+#
+# But wait — there's a catch — the very last sweet is poisoned! Can you find and
+# print the ID number of the last prisoner to receive a sweet so they can be warned?
+#
+# n => Number of Prisoners
+# m => Number of Sweets
+# ID => Starting ID
+# save_the_prisoner(N,M,ID)
+
+def save_the_prisoner(n, m, id)
+  prisoners = n
+  sweets = m
+
+  sweets_after_first_round = sweets - (prisoners - id + 1)
+  sweets_after_first_round == 0 ? prisoners : sweets_after_first_round % prisoners
+end
+
+
+# 7. Sevens
+# Write a method, #sevens(n), that accepts an integer, n, as an argument. Your method
+# should return an array of the first n integers that contain the digit 7.
+
+def sevens(n)
+  sevens_arr = []
+  i = 7
+
+  while sevens_arr.length < n
+    sevens_arr << i if i.to_s.include?(7.to_s)
+    i += 1
+  end
+
+  sevens_arr
+end
