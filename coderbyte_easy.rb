@@ -78,3 +78,43 @@ def capitalize_string(str)
     "#{word[0].upcase}#{word[1..-1]}"
   end.join(" ")
 end
+
+# 7. Time conversion
+
+def time_conversion(minutes)
+  hours = minutes / 60
+  minutes = minutes % 60
+
+  "#{'%02d' % hours} : #{'%02d' % minutes}"
+end
+
+# 8. Orderify the string
+
+def orderify(string)
+  string.chars.sort.join("")
+end
+
+# 9. AB Check
+
+def ab_check(string)
+  string.length.times do |idx|
+    le = string[idx].downcase
+    le1 = string[idx + 4]
+    if le == "a" &&  le1 == "b"
+      return true
+    elsif le = "b" && le1 == "a"
+      return true
+    end
+  end
+
+  false
+end
+
+# 10. Vowels count
+
+def count_vowels(string)
+  vowels = "aeiou"
+  string.chars.count { |chr| vowels.include?(chr) }
+end
+
+p count_vowels("Argument")
